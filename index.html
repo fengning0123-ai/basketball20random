@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>20人籃球分組</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>籃球隊員分組系統</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- 標題 -->
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">籃球隊員分組系統</h1>
+        
+        <!-- 日期和地點輸入 -->
+       <div class="flex gap-4 justify-center mb-8">
+            <div class="bg-white rounded-lg shadow-md p-4 min-w-[200px]">
+                <label class="block text-xl font-medium text-gray-700 mb-2">日期</label>
+                <input type="date" id="dateInput" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-1500">
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 min-w-[200px]">
+                <label class="block text-xl font-medium text-gray-700 mb-2">地點</label>
+                <input type="text" id="locationInput" placeholder="輸入地點" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <!-- 4個大方格 -->
+        <div class="grid grid-cols-4 gap-3 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-blue-200 pb-2">隊伍1</h3>
+                <div id="team-a" class="space-y-2">
+                    <!-- 隊伍成員將由G、F、S方格隨機分配 -->
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-green-200 pb-2">隊伍2</h3>
+                <div id="team-b" class="space-y-2">
+                    <!-- 隊伍成員將由G、F、S方格隨機分配 -->
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-purple-200 pb-2">隊伍3</h3>
+                <div id="team-c" class="space-y-2">
+                    <!-- 隊伍成員將由G、F、S方格隨機分配 -->
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
+                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-orange-200 pb-2">隊伍4</h3>
+                <div id="team-d" class="space-y-2">
+                    <!-- 隊伍成員將由G、F、S方格隨機分配 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 隨機分配按鈕 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <button onclick="randomizePosition('g')" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200">
+                🎲 隨機分配 G (中鋒)
+            </button>
+            <button onclick="randomizePosition('f')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200">
+                🎲 隨機分配 F (前鋒)
+            </button>
+            <button onclick="randomizePosition('s')" class="bg-teal-500 hover:bg-teal-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-200">
+                🎲 隨機分配 S (後衛)
+            </button>
+        </div>
+
+        <!-- 3個中型方格 (G、F、S) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-center text-gray-800 mb-4 bg-red-100 rounded-lg py-2">G (中鋒)</h3>
+                <div id="position-g" class="space-y-2 min-h-[120px]">
+                    <input type="text" placeholder="輸入中鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-center">
+                    <input type="text" placeholder="輸入中鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-center">
+                    <input type="text" placeholder="輸入中鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-center">
+                    <input type="text" placeholder="輸入中鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-center">
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-center text-gray-800 mb-4 bg-yellow-100 rounded-lg py-2">F (前鋒)</h3>
+                <div id="position-f" class="space-y-2 min-h-[120px]">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                    <input type="text" placeholder="輸入前鋒姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-center">
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-center text-gray-800 mb-4 bg-teal-100 rounded-lg py-2">S (後衛)</h3>
+                <div id="position-s" class="space-y-2 min-h-[120px]">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                    <input type="text" placeholder="輸入後衛姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-center">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 隨機分配函數
+        function randomizePosition(position) {
+            // 獲取該位置的所有輸入框
+            const positionElement = document.getElementById(`position-${position}`);
+            const inputs = positionElement.querySelectorAll('input[type="text"]');
+            
+            // 收集所有有值的球員姓名
+            const players = [];
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') {
+                    players.push(input.value.trim());
+                }
+            });
+
+            // 如果沒有球員，提示用戶
+            if (players.length === 0) {
+                alert(`請先在 ${position.toUpperCase()} 位置輸入球員姓名！`);
+                return;
+            }
+
+            const teams = ['team-a', 'team-b', 'team-c', 'team-d'];
+            const colors = {
+                'team-a': 'bg-blue-50',
+                'team-b': 'bg-green-50', 
+                'team-c': 'bg-purple-50',
+                'team-d': 'bg-orange-50'
+            };
+
+            // 清空所有隊伍中該位置的球員
+            teams.forEach(teamId => {
+                const teamElement = document.getElementById(teamId);
+                const existingPlayers = Array.from(teamElement.children);
+                existingPlayers.forEach(player => {
+                    // 檢查是否為該位置的球員（通過data屬性標記）
+                    if (player.dataset && player.dataset.position === position) {
+                        player.remove();
+                    }
+                });
+            });
+
+            // 隨機打亂球員順序
+            const shuffledPlayers = [...players];
+            for (let i = shuffledPlayers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledPlayers[i], shuffledPlayers[j]] = [shuffledPlayers[j], shuffledPlayers[i]];
+            }
+
+            // 平均分配到4個隊伍
+            shuffledPlayers.forEach((player, index) => {
+                const teamIndex = index % 4;
+                const teamId = teams[teamIndex];
+                const teamElement = document.getElementById(teamId);
+                
+                const playerDiv = document.createElement('div');
+                playerDiv.className = `${colors[teamId]} rounded-lg p-4 text-center text-gray-700 text-2xl font-bold`;
+                playerDiv.textContent = player;
+                playerDiv.dataset.position = position; // 標記該球員屬於哪個位置
+                
+                teamElement.appendChild(playerDiv);
+            });
+
+            // 添加動畫效果
+            teams.forEach(teamId => {
+                const teamElement = document.getElementById(teamId);
+                teamElement.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    teamElement.style.transform = 'scale(1)';
+                }, 200);
+            });
+        }
+
+        // 設定今天的日期為預設值
+        document.getElementById('dateInput').valueAsDate = new Date();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b14fc7a8521b307',t:'MTc2NjI5NTAxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+    
+  </body>
+  
+</html>
