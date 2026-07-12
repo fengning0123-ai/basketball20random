@@ -46,35 +46,32 @@
                 <input type="text" id="locationInput" placeholder="輸入地點" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </div>
-
-        <!-- 操作提示 -->
-       
-
         <!-- 4個大方格 -->
         <div class="grid grid-cols-4 gap-3 mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
-                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-blue-200 pb-2">隊伍1</h3>
+                <!-- 將字體放大(text-2xl)並加入 contenteditable="true" -->
+                <h3 contenteditable="true" class="text-2xl font-bold text-center text-gray-800 mb-4 border-b-2 border-blue-200 pb-2 cursor-text hover:bg-blue-50 transition-colors rounded">隊伍1</h3>
                 <div id="team-a" class="space-y-2">
                     <!-- 隊伍成員將由G、F、S方格隨機分配 -->
                 </div>
             </div>
             
             <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
-                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-green-200 pb-2">隊伍2</h3>
+                <h3 contenteditable="true" class="text-2xl font-bold text-center text-gray-800 mb-4 border-b-2 border-green-200 pb-2 cursor-text hover:bg-green-50 transition-colors rounded">隊伍2</h3>
                 <div id="team-b" class="space-y-2">
                     <!-- 隊伍成員將由G、F、S方格隨機分配 -->
                 </div>
             </div>
             
             <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
-                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-purple-200 pb-2">隊伍3</h3>
+                <h3 contenteditable="true" class="text-2xl font-bold text-center text-gray-800 mb-4 border-b-2 border-purple-200 pb-2 cursor-text hover:bg-purple-50 transition-colors rounded">隊伍3</h3>
                 <div id="team-c" class="space-y-2">
                     <!-- 隊伍成員將由G、F、S方格隨機分配 -->
                 </div>
             </div>
             
             <div class="bg-white rounded-xl shadow-lg p-6 min-h-[300px]">
-                <h3 class="text-xl font-semibold text-center text-gray-800 mb-4 border-b-2 border-orange-200 pb-2">隊伍4</h3>
+                <h3 contenteditable="true" class="text-2xl font-bold text-center text-gray-800 mb-4 border-b-2 border-orange-200 pb-2 cursor-text hover:bg-orange-50 transition-colors rounded">隊伍4</h3>
                 <div id="team-d" class="space-y-2">
                     <!-- 隊伍成員將由G、F、S方格隨機分配 -->
                 </div>
@@ -134,9 +131,14 @@
                 </div>
             </div>
         </div>
-    </div> <div class="bg-blue-100 text-blue-800 p-3 rounded-lg text-center mb-6 shadow-sm text-lg">
-            💡 <strong>操作提示：</strong>點擊球員卡片的「空白處」選取並與其他球員 <strong>交換位置</strong> ；點擊「球員姓名」即可直接 <strong>修改名稱</strong>！
+      <!-- 操作提示 -->
+        <div class="bg-blue-100 text-blue-800 p-3 rounded-lg text-center mb-6 shadow-sm text-lg">
+            💡 <strong>操作提示：</strong>
+            <br>1. 點擊「隊伍名稱」或「球員姓名」即可直接 <strong>打字修改</strong>！
+            <br>2. 點擊球員卡片的「空白處」選取，再點另一位球員即可 <strong>交換位置</strong>！
         </div>
+
+    </div>
 
     <script>
         // 設定今天的日期為預設值
