@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>20人籃球分組</title>
+    <title>籃球20人分組_可換可更名</title>
     
 
   </head>
@@ -21,6 +21,13 @@
         body {
             font-family: 'Noto Sans TC', sans-serif;
         }
+        /* 隱藏 contenteditable 的預設外框，改用底線提示 */
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-bottom: 2px solid #9ca3af;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-6">
@@ -29,16 +36,19 @@
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">籃球隊員分組系統</h1>
         
         <!-- 日期和地點輸入 -->
-       <div class="flex gap-4 justify-center mb-8">
+        <div class="flex gap-4 justify-center mb-8">
             <div class="bg-white rounded-lg shadow-md p-4 min-w-[200px]">
                 <label class="block text-xl font-medium text-gray-700 mb-2">日期</label>
-                <input type="date" id="dateInput" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-1500">
+                <input type="date" id="dateInput" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="bg-white rounded-lg shadow-md p-4 min-w-[200px]">
                 <label class="block text-xl font-medium text-gray-700 mb-2">地點</label>
                 <input type="text" id="locationInput" placeholder="輸入地點" class="w-full px-3 py-2 text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
         </div>
+
+        <!-- 操作提示 -->
+       
 
         <!-- 4個大方格 -->
         <div class="grid grid-cols-4 gap-3 mb-8">
@@ -124,11 +134,56 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> <div class="bg-blue-100 text-blue-800 p-3 rounded-lg text-center mb-6 shadow-sm text-lg">
+            💡 <strong>操作提示：</strong>點擊球員卡片的「空白處」選取並與其他球員 <strong>交換位置</strong> ；點擊「球員姓名」即可直接 <strong>修改名稱</strong>！
+        </div>
 
     <script>
+        // 設定今天的日期為預設值
+        document.getElementById('dateInput').valueAsDate = new Date();
+
+        // 紀錄目前選取要交換的球員卡片
+        let selectedCard = null;
+
+        // 處理球員卡片的選取與交換邏輯
+        function toggleSelection(card) {
+            if (!selectedCard) {
+                // 第一次點擊：選取卡片，加上醒目邊框
+                selectedCard = card;
+                card.classList.add('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+            } else if (selectedCard === card) {
+                // 第二次點擊同一個卡片：取消選取
+                card.classList.remove('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+                selectedCard = null;
+            } else {
+                // 點擊另一個卡片：執行交換
+                const nameSpan1 = selectedCard.querySelector('.player-name');
+                const nameSpan2 = card.querySelector('.player-name');
+                
+                // 交換姓名
+                const tempName = nameSpan1.textContent;
+                nameSpan1.textContent = nameSpan2.textContent;
+                nameSpan2.textContent = tempName;
+
+                // 交換位置紀錄 (dataset.position)
+                const tempPos = selectedCard.dataset.position;
+                selectedCard.dataset.position = card.dataset.position;
+                card.dataset.position = tempPos;
+
+                // 移除選取狀態
+                selectedCard.classList.remove('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+                selectedCard = null;
+            }
+        }
+
         // 隨機分配函數
         function randomizePosition(position) {
+            // 分配前先清除可能殘留的選取狀態
+            if (selectedCard) {
+                selectedCard.classList.remove('ring-4', 'ring-blue-500', 'scale-105', 'z-10');
+                selectedCard = null;
+            }
+
             // 獲取該位置的所有輸入框
             const positionElement = document.getElementById(`position-${position}`);
             const inputs = positionElement.querySelectorAll('input[type="text"]');
@@ -180,11 +235,32 @@
                 const teamId = teams[teamIndex];
                 const teamElement = document.getElementById(teamId);
                 
+                // 建立球員卡片外框
                 const playerDiv = document.createElement('div');
-                playerDiv.className = `${colors[teamId]} rounded-lg p-4 text-center text-gray-700 text-2xl font-bold`;
-                playerDiv.textContent = player;
+                playerDiv.className = `${colors[teamId]} rounded-lg p-4 text-center text-gray-700 text-2xl font-bold relative group cursor-pointer transition-all duration-200 hover:shadow-md`;
                 playerDiv.dataset.position = position; // 標記該球員屬於哪個位置
                 
+                // 綁定點擊事件以進行交換
+                playerDiv.onclick = function() { toggleSelection(this); };
+
+                // 加入交換圖示提示 (滑鼠移入時顯示)
+                const hintIcon = document.createElement('div');
+                hintIcon.className = 'absolute top-1 right-2 text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none';
+                hintIcon.textContent = '🔄';
+
+                // 建立可編輯的姓名區塊
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'player-name px-2 py-1 inline-block min-w-[50px]';
+                nameSpan.contentEditable = true; // 允許直接編輯
+                nameSpan.textContent = player;
+                
+                // 點擊姓名編輯時，防止觸發父元素的「交換」事件
+                nameSpan.onclick = function(e) {
+                    e.stopPropagation(); 
+                };
+                
+                playerDiv.appendChild(hintIcon);
+                playerDiv.appendChild(nameSpan);
                 teamElement.appendChild(playerDiv);
             });
 
@@ -197,11 +273,8 @@
                 }, 200);
             });
         }
-
-        // 設定今天的日期為預設值
-        document.getElementById('dateInput').valueAsDate = new Date();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b14fc7a8521b307',t:'MTc2NjI5NTAxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
     
   </body>
